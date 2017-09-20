@@ -1,0 +1,8 @@
+add_executable(effect2glsl main.cpp)
+
+target_include_directories(effect2glsl PRIVATE "${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/include")
+
+if(WIN32)
+    target_link_libraries(effect2glsl
+    "${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/lib/win32/hlsl2glsl.lib")
+endif(WIN32)
