@@ -1,0 +1,3 @@
+add_executable(hlsl2glsl main.cpp)
+target_link_libraries(hlsl2glsl hlslparser)
+target_include_directories(hlsl2glsl PRIVATE "${PROJECT_SOURCE_DIR}/External/hlslparser/src/")
