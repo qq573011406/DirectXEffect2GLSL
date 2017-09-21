@@ -3,6 +3,34 @@ cmake_minimum_required(VERSION 3.1)
 project(DirectXEffect2GLSL)
 
 
+IF(${UNIX})
+set (CMAKE_C_COMPILER               "clang")
+set (CMAKE_C_FLAGS_DEBUG            "-g")
+set (CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
+set (CMAKE_CXX_COMPILER             "clang++")
+set (CMAKE_CXX_FLAGS                "-Wall")
+set (CMAKE_CXX_FLAGS_DEBUG          "-g")
+set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+set (CMAKE_CXX_STANDARD 11)
+ELSEIF(${WIN32})
+# Windows specific code
+set (CMAKE_C_COMPILER               "clang-cl")
+set (CMAKE_C_FLAGS_DEBUG            "-Od /Debug /Zi /MTd")
+set (CMAKE_C_FLAGS_RELEASE            "-O2 /MT")
+set (CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 /Debug /MTd")
+set (CMAKE_CXX_COMPILER             "clang-cl")
+set (CMAKE_CXX_FLAGS_DEBUG          "/Od /Debug /Zi /MTd")
+set(CMAKE_CXX_FLAGS_RELEASE			"/MT")
+set (CMAKE_CXX_FLAGS                "-Wall -Xclang -std=gnu++14")
+set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 /Debug /MTd")
+ENDIF(${UNIX})
+set (CMAKE_C_FLAGS                  "-Wall")
+set (CMAKE_C_FLAGS_MINSIZEREL       "-Os -DNDEBUG")
+set (CMAKE_C_FLAGS_RELEASE          "-O4 -DNDEBUG")
+set (CMAKE_C_STANDARD 11)
+set (CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
+set (CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
+
 # ------------------------- Begin Generic CMake Variable Logging ------------------
 
 # /*	C++ comment style not allowed	*/
