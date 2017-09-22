@@ -1,3 +1,2 @@
-# DirectXEffect2GLSL
-## For NPLRuntime CrossPlatrom Shader issues.
-#### https://github.com/LiXizhi/NPLRuntime/issues/60
+# dxEffects2glEffects
+# translate dxEffects file to glEffects file.
