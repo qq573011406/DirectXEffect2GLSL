@@ -38,3 +38,4 @@
 build/
 
 !External/**/*.*
+.DS_Store

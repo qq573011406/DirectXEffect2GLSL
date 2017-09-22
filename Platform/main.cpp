@@ -21,6 +21,8 @@ std::string ReadFile(const char* fileName)
 
 int hlsl2glsl(const std::string& input, const std::string output)
 {
+    
+    std::cout<<"Hello world"<<std::endl;
 	using namespace M4;
 
 	std::string inputCode = ReadFile(input.c_str());
