@@ -7,3 +7,6 @@ add_library(hlslparser
 "${PROJECT_SOURCE_DIR}/External/hlslparser/src/HLSLTree.cpp"
 "${PROJECT_SOURCE_DIR}/External/hlslparser/src/MSLGenerator.cpp"
 "${PROJECT_SOURCE_DIR}/External/hlslparser/src/Engine.cpp")
+
+
+add_subdirectory(hlsl2glslfork)

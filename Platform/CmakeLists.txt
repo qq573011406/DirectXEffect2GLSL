@@ -1,8 +1,7 @@
-add_executable(hlsl2glsl
+add_executable(dx2gl
 main.cpp
 )
-target_link_libraries(hlsl2glsl hlslparser cpp)
-target_include_directories(hlsl2glsl PRIVATE 
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/"
-"${PROJECT_SOURCE_DIR}/Common/cpp/"
+target_link_libraries(dx2gl GLSLCodeGen)
+target_include_directories(dx2gl PRIVATE 
+"${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/include"
 )

@@ -632,7 +632,7 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "cpp.l"
-#line 3 "cpp.l"
+#line 4 "cpp.l"
 #include "cpp.h"
 #define YY_NO_UNISTD_H
 #define M malloc
@@ -869,7 +869,7 @@ YY_DECL
 		}
 
 	{
-#line 17 "cpp.l"
+#line 18 "cpp.l"
 
 #line 874 "cpp.c"
 
@@ -931,144 +931,144 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "cpp.l"
+#line 19 "cpp.l"
 
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 19 "cpp.l"
+#line 20 "cpp.l"
 
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 20 "cpp.l"
+#line 21 "cpp.l"
 ECHO;
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 21 "cpp.l"
+#line 22 "cpp.l"
 d(1),yypush_buffer_state(yy_create_buffer(fopen(X+10,"r"),YY_BUF_SIZE));
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 22 "cpp.l"
+#line 23 "cpp.l"
 {B(D)strcpy(a=M(yyleng),X+8);}
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 23 "cpp.l"
+#line 24 "cpp.l"
 {b=M(yyleng);d(1);f(strcpy(b,X+(X[0]==32)))?free(V[i]),V[i]=b:g(),v[s-1]=a,V[s-1]=b;B(0)}
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 24 "cpp.l"
+#line 25 "cpp.l"
 d(1),v[f(A+7)][0]=0;
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 25 "cpp.l"
+#line 26 "cpp.l"
 h(2,12);
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 26 "cpp.l"
+#line 27 "cpp.l"
 h(1,7);
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 27 "cpp.l"
+#line 28 "cpp.l"
 {d(1);if(!atoi(X+4))B(F)}
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 28 "cpp.l"
+#line 29 "cpp.l"
 {d(1);if(f(A+8))B(F)}
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 29 "cpp.l"
+#line 30 "cpp.l"
 o++;
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 30 "cpp.l"
+#line 31 "cpp.l"
 if(!o--)B(++o)
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 31 "cpp.l"
+#line 32 "cpp.l"
 if(!o)B(0)
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 32 "cpp.l"
+#line 33 "cpp.l"
 if(!o){d(2);if(f(A+14))B(0)}
 	YY_BREAK
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 33 "cpp.l"
+#line 34 "cpp.l"
 if(!o){d(1);if(atoi(X+6))B(0)}
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 34 "cpp.l"
+#line 35 "cpp.l"
 
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 35 "cpp.l"
+#line 36 "cpp.l"
 
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
-#line 36 "cpp.l"
+#line 37 "cpp.l"
 B(I)
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 37 "cpp.l"
+#line 38 "cpp.l"
 B(0)
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 38 "cpp.l"
+#line 39 "cpp.l"
 
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 39 "cpp.l"
+#line 40 "cpp.l"
 fprintf(yyout,f(A)?V[i]:a);
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(D):
 case YY_STATE_EOF(F):
 case YY_STATE_EOF(I):
-#line 40 "cpp.l"
-{a=Y;yypop_buffer_state();if(!Y)exit(0);fclose(a);}
+#line 41 "cpp.l"
+{a=Y;yypop_buffer_state();if(!Y)return 0;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 41 "cpp.l"
+#line 42 "cpp.l"
 ECHO;
 	YY_BREAK
 #line 1074 "cpp.c"
@@ -2073,7 +2073,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 41 "cpp.l"
+#line 42 "cpp.l"
 
 h(x,y){d(x);if(!f(A+y))B(F)}
 

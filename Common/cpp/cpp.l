@@ -1,4 +1,5 @@
 %option noyywrap
+%option outfile="cpp.c"
 %{
 #include "cpp.h"
 #define YY_NO_UNISTD_H
@@ -37,7 +38,7 @@ N .*\n
 <I>^"#endif"{N} B(0)
 <I>{N}
 [a-zA-Z_][a-zA-Z_0-9]* fprintf(yyout,f(A)?V[i]:a);
-<<EOF>> {a=Y;yypop_buffer_state();if(!Y)exit(0);fclose(a);}
+<<EOF>> {a=Y;yypop_buffer_state();if(!Y)return 0;}
 %%
 h(x,y){d(x);if(!f(A+y))B(F)}
 

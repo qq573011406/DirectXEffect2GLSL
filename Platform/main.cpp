@@ -5,16 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cstdio>
-
-#include "HLSLParser.h"
-#include "GLSLGenerator.h"
-#include "HLSLGenerator.h"
-
-extern "C"
-{
-	#include "cpp.h"
-}
-
+#include <cstdlib>
 
 
 
@@ -28,54 +19,76 @@ std::string ReadFile(const char* fileName)
 }
 
 
-int hlsl2glsl(const std::string& input, const std::string output)
+void printUsage()
 {
-    
-    std::cout<<"Hello world"<<std::endl;
-	using namespace M4;
-
-	std::string inputCode = ReadFile(input.c_str());
-
-
-	Allocator allocator;
-	HLSLParser parser(&allocator, input.c_str(), inputCode.data(), inputCode.size());
-	HLSLTree tree(&allocator);
-	if (!parser.Parse(&tree)) {
-		std::cerr <<"Parsing failed, aborting"<<std::endl;
-		return 1;
-	}
-	GLSLGenerator::Target target = GLSLGenerator::Target_VertexShader;
-	GLSLGenerator generator;
-	if (!generator.Generate(&tree, GLSLGenerator::Target(target), GLSLGenerator::Version_140, "VSMain")) {
-		std::cerr << "Translation failed, aborting" << std::endl;
-		return 1;
-	}
-
-	std::cout << generator.GetResult();
-
-	//std::cout << "Iutput:================" << std::endl;
-	//std::cout << inputCode << std::endl;
-
-
-
-	return 0;
+	std::cout << "Usage:\n dx2gl <source file path>  <output dir>"<<std::endl;
+	std::cout << "eg:\n dx2gl c:\\test.hlsl c:\\" << std::endl;
 }
+
+//
+//bool preprocess(const std::string& hlslPath,std::string& out)
+//{
+//	
+//	std::FILE* fin = fopen(hlslPath.c_str(), "r");
+//	if (!fin) {
+//		std::cerr << "Can't Open input file " << hlslPath << std::endl;
+//		return false;
+//	}
+//
+//	// out to tmp file
+//	std::FILE* fout = std::tmpfile();
+//	if (!fout) {
+//		std::cerr << "Create temp file failed!" << hlslPath << std::endl;
+//		return false;
+//	}
+//
+//	cpp_execute(fin, fout);
+//	std::fclose(fin);
+//
+//	long fsize = std::ftell(fout) + 1;
+//	char* outBuffer = (char*)malloc(fsize * sizeof(char));
+//	memset(outBuffer, 0, fsize * sizeof(char));
+//	std::rewind(fout);
+//	std::fread(outBuffer, sizeof(char), fsize-1, fout);
+//	std::fclose(fout);
+//
+//	std::string ret = outBuffer;
+//	free(outBuffer);
+//	out = ret;
+//
+//	return true;
+//}
+
+
+
+
 
 
 int main(int argc,char** argv)
 {
-	//if (argc < 3)return -1;
+	if (argc < 3)
+	{
+		printUsage();
+		return 0;
+	}
 	//std::string inputPath = argv[1];
-	//std::string outputPath = argv[2];
+	//std::string outputDir = argv[2];
 
-	FILE* inFile = fopen("e:/test.txt","r");
-	FILE* outFile = fopen("e:/test_out.txt","w+");
+	//std::string ppOut;
+	//if (!preprocess(inputPath, ppOut)) return -1;
 
-	cpp_execute(inFile, outFile);
+	//// Parse
+	//using namespace M4;
+	//Allocator allocator;
+	//HLSLParser parser(&allocator,inputPath.c_str(), ppOut.data(), ppOut.size());
+	//HLSLTree tree(&allocator);
+	//if (!parser.Parse(&tree)) {
+	//	std::cerr << "Parsing failed, aborting" << std::endl;
+	//	return 1;
+	//}
+	//// export glsl
 
-	//hlsl2glsl(inputPath, outputPath);
-	std::cout << "done";
-	std::getchar();
+
     return 0;
 }
 
