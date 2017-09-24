@@ -21,3 +21,6 @@ add_library(cpp
 "${PROJECT_SOURCE_DIR}/External/wgtcc/src/code_gen.cc"
 "${PROJECT_SOURCE_DIR}/External/wgtcc/src/encoding.cc"
 )
+
+add_executable(cpp_test "${PROJECT_SOURCE_DIR}/External/wgtcc/src/main.cc")
+target_link_libraries(cpp_test cpp)
