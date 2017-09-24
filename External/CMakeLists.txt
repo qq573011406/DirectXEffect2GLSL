@@ -1,12 +1,1 @@
-add_library(hlslparser
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/CodeWriter.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/GLSLGenerator.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/HLSLGenerator.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/HLSLParser.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/HLSLTokenizer.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/HLSLTree.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/MSLGenerator.cpp"
-"${PROJECT_SOURCE_DIR}/External/hlslparser/src/Engine.cpp")
-
-
 add_subdirectory(hlsl2glslfork)
