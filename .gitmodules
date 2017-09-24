@@ -1,6 +1,3 @@
-[submodule "External/hlslparser"]
-	path = External/hlslparser
-	url = https://github.com/qq573011406/hlslparser.git
 [submodule "External/hlsl2glslfork"]
 	path = External/hlsl2glslfork
 	url = https://github.com/qq573011406/hlsl2glslfork.git
