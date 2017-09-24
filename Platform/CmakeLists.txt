@@ -1,6 +1,8 @@
-add_executable(hlsl2glsl main.cpp)
+add_executable(hlsl2glsl
+main.cpp
+)
 target_link_libraries(hlsl2glsl hlslparser cpp)
 target_include_directories(hlsl2glsl PRIVATE 
 "${PROJECT_SOURCE_DIR}/External/hlslparser/src/"
-"${PROJECT_SOURCE_DIR}/External/wgtcc/src/"
+"${PROJECT_SOURCE_DIR}/Common/cpp/"
 )

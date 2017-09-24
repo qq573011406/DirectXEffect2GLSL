@@ -1,12 +1,21 @@
+
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstdio>
+
 #include "HLSLParser.h"
 #include "GLSLGenerator.h"
 #include "HLSLGenerator.h"
 
+extern "C"
+{
+	#include "cpp.h"
+}
 
-#include<iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
+
 
 
 
@@ -52,12 +61,19 @@ int hlsl2glsl(const std::string& input, const std::string output)
 	return 0;
 }
 
+
 int main(int argc,char** argv)
 {
-	if (argc < 3)return -1;
-	std::string inputPath = argv[1];
-	std::string outputPath = argv[2];
-	hlsl2glsl(inputPath, outputPath);
+	//if (argc < 3)return -1;
+	//std::string inputPath = argv[1];
+	//std::string outputPath = argv[2];
+
+	FILE* inFile = fopen("e:/test.txt","r");
+	FILE* outFile = fopen("e:/test_out.txt","w+");
+
+	cpp_execute(inFile, outFile);
+
+	//hlsl2glsl(inputPath, outputPath);
 	std::cout << "done";
 	std::getchar();
     return 0;
