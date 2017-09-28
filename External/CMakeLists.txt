@@ -1,1 +1,2 @@
 add_subdirectory(hlsl2glslfork)
+add_subdirectory(dxEffectsParser)
