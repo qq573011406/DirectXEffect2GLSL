@@ -11,7 +11,7 @@
 #include "hlsl2glsl.h"
 // fx parser
 #include "driver.h"
-#include "expression.h"
+#include "dxeffects.h"
 
 std::string ReadFile(const char* fileName)
 {
@@ -130,7 +130,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 	
 	// ½âÎöfx ÎÄ¼þ
 	DxEffectsTree fxTree;
-	example::Driver driver(fxTree);
+	DxEffectsParser::Driver driver(fxTree);
 	if (!driver.parse_file(fx_in_path)) {
 		return false;
 	}
