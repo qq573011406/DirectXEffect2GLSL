@@ -127,7 +127,7 @@ std::string get_file_name(std::string path)
 
 bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx_out_dir)
 {
-
+	
 	// ½âÎöfx ÎÄ¼ş
 	DxEffectsTree fxTree;
 	example::Driver driver(fxTree);
@@ -211,13 +211,13 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 						return false;
 					}
 
-					glslCodeBlockOut << "CodeBlock " << enterpoint + "\n{" << std::endl;
+					glslCodeBlockOut << "#CODEBLOCK_BEGIN" << std::endl;
 					glslCodeBlockOut << glslCode << std::endl;
-					glslCodeBlockOut << "}\n\n\n";
+					glslCodeBlockOut << "#CODEBLOCK_END " << enterpoint << "\n\n\n";
 
-					esslCodeBlockOut << "CodeBlock " << enterpoint + "\n{" << std::endl;
-					esslCodeBlockOut << esslCode << std::endl;
-					esslCodeBlockOut << "}\n\n\n";
+					esslCodeBlockOut << "#CODEBLOCK_BEGIN" << std::endl;
+					esslCodeBlockOut << glslCode << std::endl;
+					esslCodeBlockOut << "#CODEBLOCK_END " << enterpoint << "\n\n\n";
 					
 				}
 				break;
