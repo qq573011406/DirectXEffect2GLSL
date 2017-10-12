@@ -13,6 +13,23 @@
 #include "driver.h"
 #include "dxeffects.h"
 
+
+struct UniformInfo
+{
+	std::string name;
+	std::string semantic;
+	std::string type;
+	bool operator == (const UniformInfo& r)
+	{
+		return r.name == this->name;
+	}
+	bool operator != (const UniformInfo&r)
+	{
+		return r.name != this->name;
+	}
+};
+
+
 std::string ReadFile(const char* fileName)
 {
 	std::ifstream ifs(fileName);
@@ -44,38 +61,119 @@ static bool C_DECL IncludeOpenCallback(bool isSystem, const char* fname, const c
 	return true;
 }
 
-static std::string GetCompiledShaderText(ShHandle parser)
+
+static const char* EsTypeToString(EShType type)
 {
-	std::string txt = Hlsl2Glsl_GetShader(parser);
+	switch (type)
+	{
+	default:
+		return "unkonw";
+	case EShTypeVoid:
+		return "void";
+	case EShTypeBool:
+		return "bool";
+	case EShTypeBVec2:
+		return "bvec2";
+	case EShTypeBVec3:
+		return "bvec3";
+	case EShTypeBVec4:
+		return "bvec4";
+	case EShTypeInt:
+		return "int";
+	case EShTypeIVec2:
+		return "ivec2";
+	case EShTypeIVec3:
+		return "ivec3";
+	case EShTypeIVec4:
+		return "vec4";
+	case EShTypeFloat:
+		return "float";
+	case EShTypeVec2:
+		return "vec2";
+	case EShTypeVec3:
+		return "vec3";
+	case EShTypeVec4:
+		return "vec4";
+	case EShTypeMat2:
+		return "mat2";
+	case EShTypeMat2x3:
+		return "mat2x3";
+	case EShTypeMat2x4:
+		return "mat2x4";
+	case EShTypeMat3x2:
+		return "mat3x2";
+	case EShTypeMat3:
+		return "mat3";
+	case EShTypeMat3x4:
+		return "mat3x4";
+	case EShTypeMat4x2:
+		return "mat4x2";
+	case EShTypeMat4x3:
+		return "mat4x3";
+	case EShTypeMat4x4:
+		return "mat4";
+	case EShTypeSampler:
+		return "sampler";
+	case EShTypeSampler1D:
+		return "sampler1D";
+	case EShTypeSampler1DShadow:
+		return "sampler1DShadow";
+	case EShTypeSampler2D:
+		return "smapler2D";
+	case EShTypeSampler2DShadow:
+		return "Sampler2DShadow";
+	case EShTypeSampler3D:
+		return "Sampler3D";
+	case EShTypeSamplerCube:
+		return "SamplerCube";
+	case EShTypeSamplerRect:
+		return "SamplerRect";
+	case EShTypeSamplerRectShadow:
+		return "SamplerRectShadow";
+	case EShTypeSampler2DArray:
+		return "Sampler2DArray";
+	case EShTypeStruct:
+		return "Struct";
+	}
+}
+
+static void GetUniforms(ShHandle parser,std::vector<UniformInfo>& uniforms)
+{
+
+	std::string uniform_type_name_map[] = {"void"};
 
 	int count = Hlsl2Glsl_GetUniformCount(parser);
 	if (count > 0)
 	{
 		const ShUniformInfo* uni = Hlsl2Glsl_GetUniformInfo(parser);
-		txt += "\n// uniforms:\n";
+
 		for (int i = 0; i < count; ++i)
 		{
-			char buf[1000];
-			snprintf(buf, 1000, "// %s:%s type %d arrsize %d", uni[i].name, uni[i].semantic ? uni[i].semantic : "<none>", uni[i].type, uni[i].arraySize);
-			txt += buf;
-
-			if (uni[i].registerSpec)
-			{
-				txt += " register ";
-				txt += uni[i].registerSpec;
+			UniformInfo info;
+			info.name = uni[i].name;
+			if (uni[i].semantic != nullptr) {
+				info.semantic = uni[i].semantic;
 			}
+			info.type = EsTypeToString(uni[i].type);
 
-			txt += "\n";
+			// È¥³ýÖØ¸´
+			if (std::find(uniforms.begin(), uniforms.end(), info)==uniforms.end()) {
+				uniforms.push_back(info);
+			}		
 		}
 	}
+}
 
+static std::string GetCompiledShaderText(ShHandle parser)
+{
+	std::string txt = Hlsl2Glsl_GetShader(parser);
 	return txt;
 }
 
 
 
 
-bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::string& enterpoint,EShLanguage toLang, ETargetVersion toVersion,std::string& outCode)
+bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::string& enterpoint,EShLanguage toLang, ETargetVersion toVersion,std::string& outCode, std::vector<UniformInfo>& uniforms)
 {
 
 	// Include Handle
@@ -108,6 +206,7 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 	}
 
 	outCode = GetCompiledShaderText(parser);
+	GetUniforms(parser, uniforms);
 	Hlsl2Glsl_DestructCompiler(parser);
 	return true;
 }
@@ -141,7 +240,8 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 	Hlsl2Glsl_Initialize();
 
 
-
+	std::vector<UniformInfo> uniforms;
+	std::stringstream uniformsOut;
 	std::stringstream glslCodeBlockOut;
 	std::stringstream esslCodeBlockOut;
 
@@ -200,16 +300,18 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 					std::string glslCode;
 					std::string esslCode;
 					bool ret = false;
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_140, glslCode);
+					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_140, glslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
 					}
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_300, esslCode);
+					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_300, esslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
 					}
+
+
 
 					glslCodeBlockOut << "#CODEBLOCK_BEGIN" << std::endl;
 					glslCodeBlockOut << glslCode << std::endl;
@@ -263,6 +365,20 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 		techout << "}" << std::endl;
 	}
+
+	// output uniforms
+
+	uniformsOut << "Unifroms\n{\n";
+	for(auto uniform : uniforms)
+	{
+		uniformsOut <<"\t"<< uniform.type << " " << uniform.name;
+		if (uniform.semantic.length() > 0) {
+			uniformsOut << ":" << uniform.semantic;
+		}
+		uniformsOut << ";\n";
+	}
+	uniformsOut << "\n}\n";
+
 	
 	// write to file
 	auto fileName = get_file_name(fx_in_path);
@@ -273,22 +389,23 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 	glslOf.open(glslOutPath);
 	if (!glslOf.is_open()) {
 		std::cerr << "can't open to write " + glslOutPath << std::endl;
-		return false;
 		Hlsl2Glsl_Shutdown();
+		return false;
+		
 	}
-	glslOf << glslCodeBlockOut.str() << std::endl << techout.str();
+	glslOf << uniformsOut.str() << glslCodeBlockOut.str() << std::endl << techout.str();
 	glslOf.close();
 
 	std::ofstream esslOf;
 	esslOf.open(glesOutPath);
 	if (!esslOf.is_open()) {
 		std::cerr << "can't open to write " + glesOutPath << std::endl;
-		return false;
 		Hlsl2Glsl_Shutdown();
-	}
-	esslOf << esslCodeBlockOut.str() << std::endl << techout.str();
-	esslOf.close();
+		return false;
 
+	}
+	esslOf << uniformsOut.str() << esslCodeBlockOut.str() << std::endl << techout.str();
+	esslOf.close();
 
 	Hlsl2Glsl_Shutdown();
 	return true;
