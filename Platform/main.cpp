@@ -430,8 +430,6 @@ int main(int argc,char** argv)
 	else {
 		std::cout << "\bFailed!\n";
 	}
-
-	std::system("pause");
 	return 0;
 }
 
