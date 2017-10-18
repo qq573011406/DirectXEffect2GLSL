@@ -6,3 +6,8 @@ target_link_libraries(dx2gl fxParser)
 target_include_directories(dx2gl PRIVATE 
 "${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/include"
 )
+
+# Install
+install(TARGETS dx2gl
+    RUNTIME DESTINATION bin
+)
