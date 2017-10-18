@@ -156,7 +156,7 @@ static void GetUniforms(ShHandle parser,std::vector<UniformInfo>& uniforms)
 			}
 			info.type = EsTypeToString(uni[i].type);
 
-			// È¥³ýÖØ¸´
+			// È¥ï¿½ï¿½ï¿½Ø¸ï¿½
 			if (std::find(uniforms.begin(), uniforms.end(), info)==uniforms.end()) {
 				uniforms.push_back(info);
 			}		
@@ -227,7 +227,7 @@ std::string get_file_name(std::string path)
 bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx_out_dir)
 {
 	
-	// ½âÎöfx ÎÄ¼þ
+	// ï¿½ï¿½ï¿½ï¿½fx ï¿½Ä¼ï¿½
 	DxEffectsTree fxTree;
 	DxEffectsParser::Driver driver(fxTree);
 	if (!driver.parse_file(fx_in_path)) {
@@ -236,7 +236,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 	auto code_block = fxTree.getCodeBlock();
 	
-	// ³õÊ¼»¯HLSL2GLSLFORK
+	// ï¿½ï¿½Ê¼ï¿½ï¿½HLSL2GLSLFORK
 	Hlsl2Glsl_Initialize();
 
 
@@ -416,7 +416,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 int main(int argc,char** argv)
 {
-	if (argc < 2)
+	if (argc < 3)
 	{
 		printUsage();
 		return 0;
