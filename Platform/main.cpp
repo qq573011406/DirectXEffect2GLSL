@@ -215,10 +215,10 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 std::string get_file_name(std::string path)
 {
 	size_t pos = path.find_last_of('/');
-	if (pos < 0) {
+	if (pos == std::string::npos) {
 		pos = path.find_first_of('\\');
 	}
-	if (pos < 0)return path;
+	if (pos == 0)return path;
 
 	return path.substr(pos + 1);
 }
