@@ -119,7 +119,7 @@ static const char* EsTypeToString(EShType type)
 	case EShTypeSampler1DShadow:
 		return "sampler1DShadow";
 	case EShTypeSampler2D:
-		return "smapler2D";
+		return "sampler2D";
 	case EShTypeSampler2DShadow:
 		return "Sampler2DShadow";
 	case EShTypeSampler3D:
