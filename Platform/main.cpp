@@ -315,7 +315,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 					std::string glslCode;
 					std::string esslCode;
 					bool ret = false;
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_140, glslCode,uniforms);
+					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_110, glslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
