@@ -156,7 +156,6 @@ static void GetUniforms(ShHandle parser,std::vector<UniformInfo>& uniforms)
 			}
 			info.type = EsTypeToString(uni[i].type);
 
-			// ȥ���ظ�
 			if (std::find(uniforms.begin(), uniforms.end(), info)==uniforms.end()) {
 				uniforms.push_back(info);
 			}		
@@ -204,8 +203,24 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 		Hlsl2Glsl_DestructCompiler(parser);
 		return false;
 	}
-
 	outCode = GetCompiledShaderText(parser);
+
+	// remove #line and #version
+	std::stringstream outss;
+	std::istringstream iss(outCode);
+	char buf[1024] = {0};
+	while(iss.getline(buf,sizeof(buf))){
+		std::string line(buf);
+		if(line.find_first_of("#line ") != std::string::npos || 
+		line.find_first_of("#version ") != std::string::npos)
+		{
+			//skip
+			continue;
+		}
+		outss<<line<<std::endl;
+	}
+	outCode = outss.str();
+
 	GetUniforms(parser, uniforms);
 	Hlsl2Glsl_DestructCompiler(parser);
 	return true;
