@@ -320,7 +320,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 						Hlsl2Glsl_Shutdown();
 						return false;
 					}
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_300, esslCode,uniforms);
+					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_100, esslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
