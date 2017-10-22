@@ -211,8 +211,8 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 	char buf[1024] = {0};
 	while(iss.getline(buf,sizeof(buf))){
 		std::string line(buf);
-		if(line.find_first_of("#line ") != std::string::npos || 
-		line.find_first_of("#version ") != std::string::npos)
+		if(line.find("#line ") != std::string::npos || 
+		line.find("#version ") != std::string::npos)
 		{
 			//skip
 			continue;
