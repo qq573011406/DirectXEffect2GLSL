@@ -5,6 +5,7 @@ target_link_libraries(dx2gl GLSLCodeGen)
 target_link_libraries(dx2gl fxParser)
 target_include_directories(dx2gl PRIVATE 
 "${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/include"
+"${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/hlslang/GLSLCodeGen/"
 )
 
 # Install

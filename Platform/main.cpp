@@ -9,6 +9,8 @@
 
 
 #include "hlsl2glsl.h"
+#include "hlslCrossCompiler.h"
+#include "hlsllinker.h"
 // fx parser
 #include "driver.h"
 #include "dxeffects.h"
@@ -175,6 +177,8 @@ static std::string GetCompiledShaderText(ShHandle parser)
 bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::string& enterpoint,EShLanguage toLang, ETargetVersion toVersion,std::string& outCode, std::vector<UniformInfo>& uniforms)
 {
 
+	
+
 	// Include Handle
 	IncludeContext includeCtx;
 	includeCtx.currentFolder = inputPath.substr(0, inputPath.rfind('/'));
@@ -184,6 +188,18 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 	includeCB.data = &includeCtx;
 
 	ShHandle parser = Hlsl2Glsl_ConstructCompiler(toLang);
+
+	auto linker = parser->GetLinker();
+	linker->setUserAttribName(EAttribSemantic::EAttrSemPosition, "a_position");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemNormal, "a_normal");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemColor0, "a_color");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemColor1, "a_color2");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemTex0,"a_texCoord");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemTex1, "a_texCoord1");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemTex2, "a_texCoord2");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemTex3, "a_texCoord3");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemBlendWeight, "a_blendWeight");
+	linker->setUserAttribName(EAttribSemantic::EAttrSemBlendIndices, "a_blendIndex");
 
 	const char* sourceStr = inCode.c_str();
 	const char* infoLog = nullptr;
@@ -196,7 +212,7 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 		return false;
 
 	}
-	int translateOk = Hlsl2Glsl_Translate(parser,enterpoint.c_str(), toVersion, 0);
+	int translateOk = Hlsl2Glsl_Translate(parser,enterpoint.c_str(), toVersion,0);
 	if (!translateOk) {
 		infoLog = Hlsl2Glsl_GetInfoLog(parser);
 		std::cerr << infoLog << std::endl;
@@ -242,7 +258,7 @@ std::string get_file_name(std::string path)
 bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx_out_dir)
 {
 	
-	// ����fx �ļ�
+
 	DxEffectsTree fxTree;
 	DxEffectsParser::Driver driver(fxTree);
 	if (!driver.parse_file(fx_in_path)) {
@@ -251,7 +267,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 	auto code_block = fxTree.getCodeBlock();
 	
-	// ��ʼ��HLSL2GLSLFORK
+	
 	Hlsl2Glsl_Initialize();
 
 
