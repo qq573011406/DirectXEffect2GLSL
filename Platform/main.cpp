@@ -10,7 +10,7 @@
 
 #include "hlsl2glsl.h"
 #include "hlslCrossCompiler.h"
-#include "hlsllinker.h"
+#include "hlslLinker.h"
 // fx parser
 #include "driver.h"
 #include "dxeffects.h"
