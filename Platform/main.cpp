@@ -141,9 +141,6 @@ static const char* EsTypeToString(EShType type)
 
 static void GetUniforms(ShHandle parser,std::vector<UniformInfo>& uniforms)
 {
-
-	std::string uniform_type_name_map[] = {"void"};
-
 	int count = Hlsl2Glsl_GetUniformCount(parser);
 	if (count > 0)
 	{
