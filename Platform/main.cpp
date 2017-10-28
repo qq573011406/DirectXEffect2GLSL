@@ -346,7 +346,7 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 					glslCodeBlockOut << "#CODEBLOCK_END " << enterpoint << "\n\n\n";
 
 					esslCodeBlockOut << "#CODEBLOCK_BEGIN" << std::endl;
-					esslCodeBlockOut << glslCode << std::endl;
+					esslCodeBlockOut << esslCode << std::endl;
 					esslCodeBlockOut << "#CODEBLOCK_END " << enterpoint << "\n\n\n";
 					
 				}
