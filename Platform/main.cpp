@@ -200,8 +200,8 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 
 	const char* sourceStr = inCode.c_str();
 	const char* infoLog = nullptr;
-
-	int parseOk = Hlsl2Glsl_Parse(parser, sourceStr, toVersion, &includeCB, 0);
+	int opt = ETranslateOpBGRAVertexColor;
+	int parseOk = Hlsl2Glsl_Parse(parser, sourceStr, toVersion, &includeCB, opt);
 	if (!parseOk) {
 		infoLog = Hlsl2Glsl_GetInfoLog(parser);
 		std::cerr << infoLog << std::endl;
@@ -209,7 +209,7 @@ bool hlsl2glsl(const std::string inputPath,const std::string& inCode,const std::
 		return false;
 
 	}
-	int translateOk = Hlsl2Glsl_Translate(parser,enterpoint.c_str(), toVersion,0);
+	int translateOk = Hlsl2Glsl_Translate(parser,enterpoint.c_str(), toVersion, opt);
 	if (!translateOk) {
 		infoLog = Hlsl2Glsl_GetInfoLog(parser);
 		std::cerr << infoLog << std::endl;

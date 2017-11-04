@@ -14,6 +14,13 @@ Unifroms
 struct SimpleVSOut {
     vec4 pos;
 };
+struct vertexData {
+    vec4 pos;
+    vec3 Norm;
+    vec4 color;
+    vec4 color2;
+    vec2 texcoord;
+};
 uniform mat4 mWorldViewProj;
 uniform vec4 light_params;
 uniform vec3 sun_vec;
@@ -21,19 +28,27 @@ uniform bool g_bEnableFog;
 uniform vec4 g_fogParam;
 uniform vec4 g_fogColor;
 uniform mat4 mWorld;
-SimpleVSOut SimpleMainVS( in vec4 pos, in vec2 texcoord, in vec4 color, in vec4 color2, in vec3 Norm ) {
+SimpleVSOut SimpleMainVS( in vertexData vsin ) {
     SimpleVSOut xlat_varoutput;
-    xlat_varoutput.pos = (mWorldViewProj * pos);
+    float test_a = vsin.color.x;
+    float test_b = vsin.color.z;
+    xlat_varoutput.pos = (mWorldViewProj * vsin.pos);
     return xlat_varoutput;
 }
 attribute vec4 a_position;
-attribute vec2 a_texCoord;
+attribute vec3 a_normal;
 attribute vec4 a_color;
 attribute vec4 a_color2;
-attribute vec3 a_normal;
+attribute vec2 a_texCoord;
 void main() {
     SimpleVSOut xl_retval;
-    xl_retval = SimpleMainVS( vec4(a_position), vec2(a_texCoord), vec4(a_color), vec4(a_color2), vec3(a_normal));
+    vertexData xlt_vsin;
+    xlt_vsin.pos = vec4(a_position);
+    xlt_vsin.Norm = vec3(a_normal);
+    xlt_vsin.color = vec4(a_color.bgra);
+    xlt_vsin.color2 = vec4(a_color2.bgra);
+    xlt_vsin.texcoord = vec2(a_texCoord);
+    xl_retval = SimpleMainVS( xlt_vsin);
     gl_Position = vec4(xl_retval.pos);
 }
 
@@ -44,6 +59,13 @@ void main() {
 
 struct SimpleVSOut {
     vec4 pos;
+};
+struct vertexData {
+    vec4 pos;
+    vec3 Norm;
+    vec4 color;
+    vec4 color2;
+    vec2 texcoord;
 };
 uniform mat4 mWorldViewProj;
 uniform vec4 light_params;

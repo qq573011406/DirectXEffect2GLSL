@@ -1,40 +1,7 @@
-// Author: LiXizhi,Clayman
 
-// Desc: 2013/6
-
-
-
-#define ALPHA_TESTING_REF  0.95
-
-
-
-/** undefine to use linear torch light, otherwise it is power */
-
-// #define POWER_LIGHT_TORCH
-
-
-
-#ifdef POWER_LIGHT_TORCH
-
-	/** whether to torch lit small or bigger area */
-
-	// #define LIGHT_TORCH_SMALL_RANGE
-
-#endif
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-//  Per frame parameters
 
 float4x4 mWorldViewProj : worldviewprojection;
 
-
-
-// for selection effect: light_params.x: sun_lightIntensity, light_params.y: damageDegree
-
-// for block effect: light_params.xyz: light color, light_params.w light intensity
 
 float4 light_params: ConstVector0; 
 
@@ -71,15 +38,23 @@ struct SelectBlockVSOut
 	float4 pos	:POSITION;
 	float2 texcoord	:TEXCOORD0;
 };
-SimpleVSOut SimpleMainVS(	float4 pos		: POSITION,
-							float2 texcoord	: TEXCOORD0,
-							half4 color		: COLOR0,
-							half4 color2 : COLOR1,
-							float3	Norm	: NORMAL
-)
+
+struct vertexData
 {
+	float4 pos		: POSITION;
+	float3	Norm	: NORMAL;
+	half4 color		: COLOR0;
+	half4 color2 : COLOR1;
+	float2 texcoord	: TEXCOORD0;
+};
+
+SimpleVSOut SimpleMainVS(vertexData vsin)
+{
+	
 	SimpleVSOut output;
-	output.pos = mul(pos, mWorldViewProj);
+	float test_a = vsin.color.x;
+	float test_b = vsin.color.b;
+	output.pos = mul(vsin.pos, mWorldViewProj);
 	return output;
 }
 
@@ -99,7 +74,6 @@ technique SimpleMesh_vs20_ps20
 	{
 
 		VertexShader = compile vs_2_0 SimpleMainVS();
-
 		PixelShader  = compile ps_2_0 SimpleMainPS();
 
 	}
