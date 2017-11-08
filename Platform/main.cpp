@@ -31,6 +31,14 @@ struct UniformInfo
 	}
 };
 
+enum class  OutLang
+{
+	Unkonw,
+	GLSL,
+	ESSL,
+};
+
+
 
 std::string ReadFile(const char* fileName)
 {
@@ -44,8 +52,9 @@ std::string ReadFile(const char* fileName)
 
 void printUsage()
 {
-	std::cout << "Usage:\n dx2gl <source file path>  <output dir>"<<std::endl;
-	std::cout << "eg:\n dx2gl c:\\test.hlsl c:\\" << std::endl;
+	std::cout << "Usage:\n dx2gl <-glsl>|<-essl>  <in> <output>"<<std::endl;
+	std::cout << "eg:\n dx2gl -glsl c:\\test.hlsl c:\\test.glsl" << std::endl;
+	std::cout << "eg:\n dx2gl -elsl c:\\test.hlsl c:\\test.essl" << std::endl;
 }
 
 struct IncludeContext
@@ -252,13 +261,13 @@ std::string get_file_name(std::string path)
 }
 
 
-bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx_out_dir)
+bool translate_hlfx_to_glfx(OutLang outLang,const std::string& inPath,const std::string outPath)
 {
 	
 
 	DxEffectsTree fxTree;
 	DxEffectsParser::Driver driver(fxTree);
-	if (!driver.parse_file(fx_in_path)) {
+	if (!driver.parse_file(inPath)) {
 		return false;
 	}
 
@@ -328,12 +337,12 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 					std::string glslCode;
 					std::string esslCode;
 					bool ret = false;
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_110, glslCode,uniforms);
+					ret = hlsl2glsl(inPath, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_110, glslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
 					}
-					ret = hlsl2glsl(fx_in_path, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_100, esslCode,uniforms);
+					ret = hlsl2glsl(inPath, code_block, enterpoint, toLang, ETargetVersion::ETargetGLSL_ES_100, esslCode,uniforms);
 					if (!ret) {
 						Hlsl2Glsl_Shutdown();
 						return false;
@@ -409,32 +418,31 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 	
 	// write to file
-	auto fileName = get_file_name(fx_in_path);
-	auto glslOutPath = glfx_out_dir + "/" + fileName + ".glsl";
-	auto glesOutPath = glfx_out_dir + "/" + fileName + ".essl";
-	
-	std::ofstream glslOf;
-	glslOf.open(glslOutPath);
-	if (!glslOf.is_open()) {
-		std::cerr << "can't open to write " + glslOutPath << std::endl;
+
+
+
+	std::ofstream of;
+	of.open(outPath);
+	if (!of.is_open()) {
+		std::cerr << "Can't open to write " + outPath << std::endl;
 		Hlsl2Glsl_Shutdown();
 		return false;
 		
 	}
-	glslOf << uniformsOut.str() << glslCodeBlockOut.str() << std::endl << techout.str();
-	glslOf.close();
-
-	std::ofstream esslOf;
-	esslOf.open(glesOutPath);
-	if (!esslOf.is_open()) {
-		std::cerr << "can't open to write " + glesOutPath << std::endl;
+	if (outLang == OutLang::GLSL) {
+		of << uniformsOut.str() << glslCodeBlockOut.str() << std::endl << techout.str();
+	}
+	else if (outLang == OutLang::ESSL)
+	{
+		of << uniformsOut.str() << esslCodeBlockOut.str() << std::endl << techout.str();
+	}else
+	{
+		std::cerr << "Unkow out lang "<< std::endl;
+		of.close();
 		Hlsl2Glsl_Shutdown();
 		return false;
-
 	}
-	esslOf << uniformsOut.str() << esslCodeBlockOut.str() << std::endl << techout.str();
-	esslOf.close();
-
+	of.close();
 	Hlsl2Glsl_Shutdown();
 	return true;
 }
@@ -444,15 +452,41 @@ bool translate_hlfx_to_glfx(const std::string& fx_in_path,const std::string glfx
 
 int main(int argc,char** argv)
 {
-	if (argc < 3)
+
+	OutLang lang = OutLang::Unkonw;
+	if (argc < 4)
 	{
 		printUsage();
 		return 0;
 	}
-	std::string inputPath = argv[1];
-	std::string outputDir = argv[2];
+	else {
+		std::string opt_lang = argv[1];
+		if (opt_lang == "-glsl" || opt_lang == "-g")
+		{
+			lang = OutLang::GLSL;
+		}
+		else if (opt_lang == "-essl" || opt_lang == "-e")
+		{
+			lang = OutLang::ESSL;
+		}
+		else {
+			lang = OutLang::Unkonw;
+		}
 
-	if (translate_hlfx_to_glfx(inputPath, outputDir)) {
+		if (lang == OutLang::Unkonw)
+		{
+			std::cerr << "bad option" + opt_lang << std::endl;
+			printUsage();
+			return 0;
+		}
+	}
+
+
+	
+	std::string inputPath = argv[2];
+	std::string outputDir = argv[3];
+
+	if (translate_hlfx_to_glfx(lang,inputPath, outputDir)) {
 		std::cout << "\bSucessed!\n";
 	}
 	else {
