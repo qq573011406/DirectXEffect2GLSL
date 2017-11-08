@@ -8,6 +8,11 @@ target_include_directories(dx2gl PRIVATE
 "${PROJECT_SOURCE_DIR}/External/hlsl2glslfork/hlslang/GLSLCodeGen/"
 )
 
+# Out
+set_target_properties(dx2gl 
+PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/
+)
+
 # Install
 install(TARGETS dx2gl
     RUNTIME DESTINATION bin
