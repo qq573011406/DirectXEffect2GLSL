@@ -1,6 +1,6 @@
 [submodule "External/hlsl2glslfork"]
 	path = External/hlsl2glslfork
-	url = https://github.com/qq573011406/hlsl2glslfork.git
+	url = https://github.com/tatfook/hlsl2glslfork.git
 [submodule "External/dxEffectsParser"]
 	path = External/dxEffectsParser
-	url = https://github.com/qq573011406/dxEffectsParser.git
+	url = https://github.com/tatfook/dxEffectsParser.git
